@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres:14
+    container_name: pms_postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pmsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: pms_rabbitmq
+    ports:
+      - "5672:5672"  # For AMQP
+      - "15672:15672" # For Management UI
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgresql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/pmsdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+
+  project-service:
+    build: ./project-service
+    container_name: project-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgresql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/pmsdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+
+  document-service:
+    build: ./document-service
+    container_name: document-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgresql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/pmsdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - auth-service
+      - project-service
+      - document-service
+    environment:
+      # In a real setup, service discovery would handle this
+      - AUTH_SERVICE_URL=http://auth-service:8081
+      - PROJECT_SERVICE_URL=http://project-service:8082
+      - DOCUMENT_SERVICE_URL=http://document-service:8083
+
+volumes:
+  postgres_data:

@@ -1,0 +1,6 @@
+com\example\documentservice\service\DocumentServiceImpl.class
+com\example\documentservice\domain\DocumentEntity.class
+com\example\documentservice\service\DocumentService.class
+com\example\documentservice\repository\DocumentRepository.class
+com\example\documentservice\DocumentServiceApplication.class
+com\example\documentservice\controller\DocumentController.class

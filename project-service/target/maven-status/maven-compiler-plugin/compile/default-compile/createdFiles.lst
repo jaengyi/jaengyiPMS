@@ -1,0 +1,6 @@
+com\example\projectservice\controller\ProjectController.class
+com\example\projectservice\ProjectServiceApplication.class
+com\example\projectservice\domain\ProjectMemberEntity.class
+com\example\projectservice\domain\ProjectEntity.class
+com\example\projectservice\controller\TaskController.class
+com\example\projectservice\domain\TaskEntity.class
