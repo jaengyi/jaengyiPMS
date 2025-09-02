@@ -1,51 +1,51 @@
-# How to Run the Application
+# 애플리케이션 실행 방법
 
-This document provides step-by-step instructions to build and run the entire Jaengyi PMS application stack, including all backend microservices and the frontend web application.
+이 문서는 백엔드 마이크로서비스와 프론트엔드 웹 애플리케이션을 포함한 전체 Jaengyi PMS 애플리케이션 스택을 빌드하고 실행하기 위한 단계별 지침을 제공합니다.
 
-## Prerequisites
+## 사전 요구 사항
 
--   **Java 17:** Ensure you have Java 17 or a later version installed.
--   **Apache Maven:** The project uses Maven for building the backend services.
--   **Docker and Docker Compose:** Required to containerize and run the microservices and infrastructure (PostgreSQL, RabbitMQ).
--   **Node.js and npm:** Required for running the frontend React application.
+-   **Java 17:** Java 17 또는 그 이상의 버전이 설치되어 있는지 확인하세요.
+-   **Apache Maven:** 백엔드 서비스를 빌드하기 위해 Maven을 사용합니다.
+-   **Docker 및 Docker Compose:** 마이크로서비스와 인프라(PostgreSQL, RabbitMQ)를 컨테이너화하고 실행하는 데 필요합니다.
+-   **Node.js 및 npm:** 프론트엔드 React 애플리케이션을 실행하는 데 필요합니다.
 
-## Step 1: Run Backend Services
+## 1단계: 백엔드 서비스 실행
 
-All backend microservices and infrastructure are managed by Docker Compose.
+모든 백엔드 마이크로서비스와 인프라는 Docker Compose로 관리됩니다.
 
-1.  Open a terminal in the project's root directory (`C:\05.Project\jaengyiPMS`).
-2.  Execute the following command to build the Docker images and start all containers. The `--build` flag ensures that any code changes are re-built into the images.
+1.  프로젝트의 루트 디렉토리(`C:\05.Project\jaengyiPMS`)에서 터미널을 엽니다.
+2.  다음 명령을 실행하여 Docker 이미지를 빌드하고 모든 컨테이너를 시작합니다. `--build` 플래그는 코드 변경 사항이 이미지에 다시 빌드되도록 보장합니다.
 
     ```shell
     docker-compose up --build
     ```
 
-    This command will run all services in the foreground and display their logs. Keep this terminal window open.
+    이 명령은 모든 서비스를 포그라운드에서 실행하고 로그를 표시합니다. 이 터미널 창을 열어 두세요.
 
-## Step 2: Run the Frontend Application
+## 2단계: 프론트엔드 애플리케이션 실행
 
-With the backend running, you can now start the user interface.
+백엔드가 실행 중이면 이제 사용자 인터페이스를 시작할 수 있습니다.
 
-1.  Open a **new terminal window**.
-2.  Navigate to the `frontend` directory:
+1.  **새 터미널 창**을 엽니다.
+2.  `frontend` 디렉토리로 이동합니다:
     ```shell
     cd frontend
     ```
-3.  If you are running this for the first time, install the necessary Node.js dependencies:
+3.  처음 실행하는 경우 필요한 Node.js 종속성을 설치합니다:
     ```shell
     npm install
     ```
-4.  Start the React development server:
+4.  React 개발 서버를 시작합니다:
     ```shell
     npm start
     ```
 
-## Step 3: Access the Website
+## 3단계: 웹사이트 접속
 
-After `npm start` completes, it should automatically open a new tab in your default web browser.
+`npm start`가 완료되면 기본 웹 브라우저에서 새 탭이 자동으로 열립니다.
 
-If it doesn't, you can manually access the application by navigating to the following URL in your web browser:
+그렇지 않은 경우 웹 브라우저에서 다음 URL로 이동하여 애플리케이션에 수동으로 접속할 수 있습니다:
 
 **[http://localhost:3000](http://localhost:3000)**
 
-You should see the application's login page.
+애플리케이션의 로그인 페이지가 표시됩니다.

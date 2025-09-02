@@ -1,72 +1,72 @@
-# Jaengyi PMS (SI Project Management & Collaboration Tool)
+# Jaengyi PMS (SI 프로젝트 관리 및 협업 도구)
 
-This is a comprehensive SI (System Integration) project management and collaboration tool built with a modern microservices architecture. This document outlines the project structure, technologies used, and instructions for running the application.
+이것은 현대적인 마이크로서비스 아키텍처로 구축된 포괄적인 SI(시스템 통합) 프로젝트 관리 및 협업 도구입니다. 이 문서는 프로젝트 구조, 사용된 기술 및 애플리케이션 실행 지침을 간략하게 설명합니다.
 
-## 1. Architecture
+## 1. 아키텍처
 
-The system is designed based on a **Microservice Architecture (MSA)** to ensure scalability, flexibility, and separation of concerns. Each core functionality is encapsulated within its own independent service.
+이 시스템은 확장성, 유연성 및 관심사 분리를 보장하기 위해 **마이크로서비스 아키텍처(MSA)**를 기반으로 설계되었습니다. 각 핵심 기능은 자체 독립 서비스 내에 캡슐화되어 있습니다.
 
--   **API Gateway:** A single entry point for all client requests, handling routing, authentication, and other cross-cutting concerns.
--   **Service Discovery:** (Assumed for `lb://` URI in gateway) Each microservice would register itself with a discovery server like Eureka or Consul.
--   **Backend Services:** Each service has its own dedicated responsibility and database schema.
--   **Frontend:** A single-page application (SPA) that communicates with the backend services via the API Gateway.
+-   **API 게이트웨이:** 모든 클라이언트 요청에 대한 단일 진입점으로, 라우팅, 인증 및 기타 교차 절단 관심사를 처리합니다.
+-   **서비스 디스커버리:** (게이트웨이의 `lb://` URI에 대해 가정) 각 마이크로서비스는 Eureka 또는 Consul과 같은 디스커버리 서버에 자신을 등록합니다.
+-   **백엔드 서비스:** 각 서비스는 자체의 전용 책임과 데이터베이스 스키마를 가집니다.
+-   **프론트엔드:** API 게이트웨이를 통해 백엔드 서비스와 통신하는 단일 페이지 애플리케이션(SPA)입니다.
 
-## 2. Technology Stack
+## 2. 기술 스택
 
-| Category      | Technology                                               |
+| 카테고리      | 기술                                               |
 |---------------|----------------------------------------------------------|
-| **Backend**   | Java 17, Spring Boot 3.x, Spring Cloud, Spring Security  |
-| **Frontend**  | React.js, Axios                                          |
-| **Database**  | PostgreSQL                                               |
+| **백엔드**   | Java 17, Spring Boot 3.x, Spring Cloud, Spring Security  |
+| **프론트엔드**  | React.js, Axios                                          |
+| **데이터베이스**  | PostgreSQL                                               |
 | **ORM**       | JPA (Hibernate)                                          |
-| **Build Tool**| Maven                                                    |
-| **Infra/DevOps**| Docker, Docker Compose                                   |
-| **Messaging** | RabbitMQ (Included in Docker Compose)                    |
+| **빌드 도구**| Maven                                                    |
+| **인프라/DevOps**| Docker, Docker Compose                                   |
+| **메시징** | RabbitMQ (Docker Compose에 포함)                    |
 
-## 3. Service Overview
+## 3. 서비스 개요
 
 ### `api-gateway`
--   **Role:** Acts as the single entry point for all incoming requests. It routes requests to the appropriate microservice.
--   **Features:**
-    -   Service routing for all backend services.
-    -   Global filter for JWT-based authentication validation.
+-   **역할:** 모든 들어오는 요청에 대한 단일 진입점 역할을 합니다. 요청을 적절한 마이크로서비스로 라우팅합니다.
+-   **기능:**
+    -   모든 백엔드 서비스에 대한 서비스 라우팅.
+    -   JWT 기반 인증 유효성 검사를 위한 글로벌 필터.
 
 ### `auth-service`
--   **Role:** Manages all aspects of user authentication and authorization.
--   **Features:**
-    -   User registration (`/users`).
-    -   User login and JWT token issuance (`/login`).
-    -   User information retrieval.
+-   **역할:** 사용자 인증 및 권한 부여의 모든 측면을 관리합니다.
+-   **기능:**
+    -   사용자 등록 (`/users`).
+    -   사용자 로그인 및 JWT 토큰 발급 (`/login`).
+    -   사용자 정보 검색.
 
 ### `project-service`
--   **Role:** Handles the core project management functionalities.
--   **Features:**
-    -   Project creation and management.
-    -   Task management within projects (WBS).
-    -   Project member management.
+-   **역할:** 핵심 프로젝트 관리 기능을 처리합니다.
+-   **기능:**
+    -   프로젝트 생성 및 관리.
+    -   프로젝트 내 작업 관리 (WBS).
+    -   프로젝트 멤버 관리.
 
 ### `document-service`
--   **Role:** Manages file uploads, downloads, and versioning for project-related documents.
--   **Features:**
-    -   File upload associated with a project.
-    -   File download.
-    -   (Assumed) Integration with AWS S3 for object storage.
+-   **역할:** 프로젝트 관련 문서의 파일 업로드, 다운로드 및 버전 관리를 관리합니다.
+-   **기능:**
+    -   프로젝트와 관련된 파일 업로드.
+    -   파일 다운로드.
+    -   (가정) 객체 저장을 위한 AWS S3와의 통합.
 
 ### `frontend`
--   **Role:** Provides the user interface for interacting with the system.
--   **Features:**
-    -   Login page.
-    -   Project dashboard to view projects.
-    -   (Skeleton) Kanban board component for task visualization.
+-   **역할:** 시스템과 상호 작용하기 위한 사용자 인터페이스를 제공합니다.
+-   **기능:**
+    -   로그인 페이지.
+    -   프로젝트를 볼 수 있는 프로젝트 대시보드.
+    -   (스켈레톤) 작업 시각화를 위한 칸반 보드 컴포넌트.
 
-## 4. How to Run the Application
+## 4. 애플리케이션 실행 방법
 
-For detailed, step-by-step instructions on how to build and run the entire application stack, please see the execution guide:
+전체 애플리케이션 스택을 빌드하고 실행하는 방법에 대한 자세한 단계별 지침은 실행 가이드를 참조하세요:
 
-**[>> How to Run the Application (EXECUTE.md)](EXECUTE.md)**
+**[>> 애플리케이션 실행 방법 (EXECUTE.md)](EXECUTE.md)**
 
 
-## 5. Project Structure
+## 5. 프로젝트 구조
 
 ```
 .
@@ -79,3 +79,30 @@ For detailed, step-by-step instructions on how to build and run the entire appli
 ├── pom.xml
 └── README.md
 ```
+
+
+## 6. 데이터베이스 스키마
+
+각 마이크로서비스는 자체의 격리된 데이터베이스 스키마를 가지고 있어 느슨한 결합을 보장합니다.
+
+### `auth-service`
+-   **USERS:** 사용자 자격 증명 및 프로필 정보를 저장합니다.
+-   **ROLES:** 사용자 역할(예: ADMIN, USER)을 정의합니다.
+
+### `project-service`
+-   **PROJECT:** 프로젝트 세부 정보를 저장합니다.
+-   **PROJECT_MEMBER:** 사용자와 프로젝트 간의 관계를 관리합니다.
+-   **TASK:** 프로젝트 내의 개별 작업 또는 작업 항목을 나타냅니다.
+
+### `document-service`
+-   **DOCUMENT:** 파일 이름, 경로(예: S3 URL) 및 관련 프로젝트와 같은 업로드된 파일에 대한 메타데이터를 저장합니다.
+
+## 7. 향후 개선 사항
+
+-   **서비스 디스커버리 구현:** Eureka와 같은 서비스 디스커버리 서버를 통합하여 서비스 위치를 동적으로 관리합니다.
+-   **중앙 집중식 구성:** Spring Cloud Config를 사용하여 모든 마이크로서비스의 구성을 한 곳에서 관리합니다.
+-   **CI/CD 파이프라인:** 지속적인 통합 및 배포 파이프라인을 설정합니다.
+-   **향상된 보안:** 리프레시 토큰 및 더 세분화된 접근 제어를 구현합니다.
+-   **실시간 알림:** 실시간 업데이트를 위해 알림 서비스(예: WebSockets 또는 RabbitMQ 사용)를 추가합니다.
+-   **프론트엔드 기능 완성:** 칸반 보드, 문서 관리 UI 및 기타 기능을 완전히 구현합니다.
+-   **단위 및 통합 테스트:** 모든 서비스에 대한 포괄적인 테스트 커버리지를 추가합니다.
